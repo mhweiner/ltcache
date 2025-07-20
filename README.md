@@ -1,6 +1,6 @@
 # ltcache
 
-A lightweight, in-memory caching library - like Redis but much simpler. Features TTL support, concurrent request handling, and comprehensive statistics. Perfect for Node.js applications that need fast caching without the complexity of Redis.
+A lightweight, in-memory caching library - like Redis but much simpler. Features TTL support, concurrent request handling, and comprehensive statistics. Perfect for Node.js applications and frontend applications that need fast caching without the complexity of Redis.
 
 [![build status](https://github.com/mhweiner/ltcache/actions/workflows/release.yml/badge.svg)](https://github.com/mhweiner/ltcache/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -18,6 +18,7 @@ A lightweight, in-memory caching library - like Redis but much simpler. Features
 - **🎯 Pattern Removal**: Remove multiple keys using regex patterns
 - **🔒 TypeScript**: Full type safety with generics
 - **⚡ Fast**: In-memory storage for maximum performance
+- **🌐 Universal**: Works in Node.js, browsers, React, Vue, and other frontend frameworks
 
 ## 📦 Installation
 
@@ -60,8 +61,10 @@ console.log(`Hit rate: ${stats.hitRate}%`);
 - **Database Query Results**: Store frequently accessed data
 - **Configuration Storage**: Cache app configuration
 - **Session Data**: Store temporary user session information
-- **Rate Limiting**: Track request counts and limits
 - **Microservices**: Lightweight caching between services
+- **Frontend Apps**: Cache API responses, user preferences, and computed data in React, Vue, and other frameworks
+- **Browser Storage**: Lightweight alternative to localStorage with TTL support
+- **SPA Performance**: Improve app responsiveness by caching expensive operations
 
 ### When to use ltcache vs Redis:
 
@@ -71,6 +74,7 @@ console.log(`Hit rate: ${stats.hitRate}%`);
 - Your cache fits in memory
 - You don't need persistence across restarts
 - You want minimal setup and configuration
+- You're building frontend applications (React, Vue, etc.) and need client-side caching
 
 **Use Redis when:**
 - You need persistence across application restarts
