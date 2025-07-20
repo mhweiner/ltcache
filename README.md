@@ -74,7 +74,7 @@ console.log(`Hit rate: ${stats.hitRate}%`);
 
 **Use Redis when:**
 - You need persistence across application restarts
-- You need to share cache across multiple applications
+- You need to share cache across multiple applications (though ltcache could be used as the foundation for a Redis-style server)
 - You need advanced data structures (lists, sets, etc.)
 - You need pub/sub functionality
 - You need clustering or replication
