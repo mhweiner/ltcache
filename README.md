@@ -2,7 +2,7 @@
 
 A lightweight, in-memory caching library - like Redis but much simpler. Features TTL support, concurrent request handling, and comprehensive statistics. Perfect for Node.js applications that need fast caching without the complexity of Redis.
 
-[![npm version](https://badge.fury.io/js/ltcache.svg)](https://badge.fury.io/js/ltcache)
+[![build status](https://github.com/mhweiner/ltcache/actions/workflows/release.yml/badge.svg)](https://github.com/mhweiner/ltcache/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![SemVer](https://img.shields.io/badge/SemVer-2.0.0-blue)]()
