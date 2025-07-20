@@ -5,6 +5,9 @@ A lightweight, in-memory caching library - like Redis but much simpler. Features
 [![npm version](https://badge.fury.io/js/ltcache.svg)](https://badge.fury.io/js/ltcache)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![SemVer](https://img.shields.io/badge/SemVer-2.0.0-blue)]()
+[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
+[![AutoRel](https://img.shields.io/badge/%F0%9F%9A%80%20AutoRel-2D4DDE)](https://github.com/mhweiner/autorel)
 
 ## ✨ Features
 
