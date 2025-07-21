@@ -1,6 +1,5 @@
 /* eslint-disable max-lines-per-function */
-
-import {logger} from 'jsout';
+import {logger} from './logger';
 
 export type Cache = {
     get: <T>(key: string, fn?: () => Promise<T>, lifetimeInSeconds?: number) => Promise<T>

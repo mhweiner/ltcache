@@ -4,7 +4,7 @@ import {mock} from 'cjs-mock';
 import * as mod from './cache';
 
 const m: typeof mod = mock('./cache', {
-    jsout: {logger: {debug: () => {}}},
+    './logger': {logger: {debug: () => {}}},
 });
 
 test('cache returns undefined for missing key', async (assert) => {
