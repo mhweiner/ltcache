@@ -34,6 +34,9 @@ import {cache} from 'ltcache';
 // Create a cache instance
 const cacheInstance = cache();
 
+// Create a cache instance with debug logging enabled
+const debugCache = cache(true);
+
 // Simple caching
 cacheInstance.set('user:123', {name: 'Alice', email: 'alice@example.com'}, 3600); // 1 hour TTL
 const user = await cacheInstance.get('user:123');
@@ -84,6 +87,25 @@ console.log(`Hit rate: ${stats.hitRate}%`);
 - You need clustering or replication
 
 ## 🔧 Advanced Usage
+
+### Debug Mode
+
+Enable debug logging to see cache operations in real-time:
+
+```ts
+// Create cache with debug logging enabled
+const cache = cache(true);
+
+// All cache operations will now log to console
+await cache.get('user:123', async () => {
+  return await fetchUserFromDatabase(123);
+});
+// Output: miss: user:123
+// Output: set: user:123
+
+await cache.get('user:123');
+// Output: hit: user:123
+```
 
 ### Concurrent Request Handling
 

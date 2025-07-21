@@ -9,7 +9,7 @@
 ### `cache()`
 
 ```ts
-cache(): Cache
+cache(debug?: boolean): Cache
 ```
 
 Creates a new in-memory cache instance with TTL support, concurrent request handling, and comprehensive statistics.
@@ -17,8 +17,15 @@ Creates a new in-memory cache instance with TTL support, concurrent request hand
 ```ts
 import {cache} from 'ltcache';
 
+// Create cache without debug logging (default)
 const cacheInstance = cache();
+
+// Create cache with debug logging enabled
+const debugCache = cache(true);
 ```
+
+**Parameters:**
+- `debug` (optional): When `true`, enables debug logging for cache operations. Defaults to `false`.
 
 ---
 
@@ -133,6 +140,34 @@ type Report = {
 ---
 
 ## 🔧 Advanced Features
+
+### Debug Logging
+
+Enable debug mode to see detailed cache operations in real-time:
+
+```ts
+// Create cache with debug logging
+const cache = cache(true);
+
+// All cache operations will now log to console
+await cache.get('user:123', async () => {
+  return await fetchUserFromDatabase(123);
+});
+// Output: miss: user:123
+// Output: set: user:123
+
+await cache.get('user:123');
+// Output: hit: user:123
+
+await cache.get('missing-key');
+// Output: miss: missing-key
+```
+
+Debug logging is useful for:
+- Understanding cache behavior during development
+- Debugging cache performance issues
+- Monitoring cache hit/miss patterns
+- Verifying TTL expiration
 
 ### Concurrent Request Handling
 

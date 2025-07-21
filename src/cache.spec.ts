@@ -1,16 +1,11 @@
 /* eslint-disable max-lines-per-function */
 import {test} from 'kizu';
-import {mock} from 'cjs-mock';
-import * as mod from './cache';
-
-const m: typeof mod = mock('./cache', {
-    './logger': {logger: {debug: () => {}}},
-});
+import {cache} from './cache';
+import {mock, stub} from 'cjs-mock';
 
 test('cache returns undefined for missing key', async (assert) => {
 
-    const c = m.cache();
-    const result = await c.get('not-there');
+    const result = await cache().get('not-there');
 
     assert.equal(result, undefined);
 
@@ -18,7 +13,7 @@ test('cache returns undefined for missing key', async (assert) => {
 
 test('set and get value', async (assert) => {
 
-    const c = m.cache();
+    const c = cache();
 
     c.set('foo', 123);
     const result = await c.get<number>('foo');
@@ -29,7 +24,7 @@ test('set and get value', async (assert) => {
 
 test('set and get with lifetime', async (assert) => {
 
-    const c = m.cache();
+    const c = cache();
 
     c.set('foo', 123, 5);
     const result = await c.get<number>('foo');
@@ -40,7 +35,7 @@ test('set and get with lifetime', async (assert) => {
 
 test('remove deletes key', async (assert) => {
 
-    const c = m.cache();
+    const c = cache();
 
     c.set('foo', 123);
     c.remove('foo');
@@ -52,7 +47,7 @@ test('remove deletes key', async (assert) => {
 
 test('remove with regex pattern', async (assert) => {
 
-    const c = m.cache();
+    const c = cache();
 
     c.set('user:123', 'alice');
     c.set('user:456', 'bob');
@@ -67,7 +62,7 @@ test('remove with regex pattern', async (assert) => {
 
 test('reset removes all keys and resets stats', async (assert) => {
 
-    const c = m.cache();
+    const c = cache();
 
     c.set('a', 1);
     c.set('b', 2);
@@ -88,7 +83,7 @@ test('reset removes all keys and resets stats', async (assert) => {
 
 test('get with function caches result', async (assert) => {
 
-    const c = m.cache();
+    const c = cache();
     let count = 0;
 
     const value = await c.get('foo', async () => {
@@ -115,7 +110,7 @@ test('get with function caches result', async (assert) => {
 
 test('get with function and lifetime', async (assert) => {
 
-    const c = m.cache();
+    const c = cache();
     let count = 0;
 
     const value = await c.get('foo', async () => {
@@ -142,7 +137,7 @@ test('get with function and lifetime', async (assert) => {
 
 test('expires after timeout', async (assert) => {
 
-    const c = m.cache();
+    const c = cache();
 
     c.set('expire', 666, 1); // 1 second
     assert.equal(await c.get('expire'), 666);
@@ -154,7 +149,7 @@ test('expires after timeout', async (assert) => {
 
 test('expires after timeout with function', async (assert) => {
 
-    const c = m.cache();
+    const c = cache();
     let count = 0;
 
     await c.get('expire', async () => {
@@ -185,7 +180,7 @@ test('expires after timeout with function', async (assert) => {
 
 test('clearTimeout when setting new value', async (assert) => {
 
-    const c = m.cache();
+    const c = cache();
 
     c.set('key', 'value1', 1);
 
@@ -201,7 +196,7 @@ test('clearTimeout when setting new value', async (assert) => {
 
 test('report returns correct statistics', async (assert) => {
 
-    const c = m.cache();
+    const c = cache();
 
     // Initial state
     let report = c.report();
@@ -229,7 +224,7 @@ test('report returns correct statistics', async (assert) => {
 
 test('report hit rate calculation', async (assert) => {
 
-    const c = m.cache();
+    const c = cache();
 
     // 3 hits, 1 miss = 75% hit rate
     c.set('a', 1);
@@ -249,7 +244,7 @@ test('report hit rate calculation', async (assert) => {
 
 test('report size calculation', async (assert) => {
 
-    const c = m.cache();
+    const c = cache();
 
     // Add items with known sizes
     c.set('short', 'a');
@@ -264,7 +259,7 @@ test('report size calculation', async (assert) => {
 
 test('handles different data types', async (assert) => {
 
-    const c = m.cache();
+    const c = cache();
 
     c.set('string', 'hello');
     c.set('number', 42);
@@ -286,7 +281,7 @@ test('handles different data types', async (assert) => {
 
 test('handles async function that throws', async (assert) => {
 
-    const c = m.cache();
+    const c = cache();
 
     try {
 
@@ -310,7 +305,7 @@ test('handles async function that throws', async (assert) => {
 
 test('handles multiple concurrent gets for same key', async (assert) => {
 
-    const c = m.cache();
+    const c = cache();
     let callCount = 0;
 
     const promises = [
@@ -346,7 +341,7 @@ test('handles multiple concurrent gets for same key', async (assert) => {
 
 test('remove with regex clears timeouts', async (assert) => {
 
-    const c = m.cache();
+    const c = cache();
 
     c.set('user:123', 'alice', 10);
     c.set('user:456', 'bob', 10);
@@ -365,7 +360,7 @@ test('remove with regex clears timeouts', async (assert) => {
 
 test('edge cases', async (assert) => {
 
-    const c = m.cache();
+    const c = cache();
 
     // Empty string key
     c.set('', 'empty key');
@@ -386,7 +381,7 @@ test('edge cases', async (assert) => {
 
 test('report after reset', async (assert) => {
 
-    const c = m.cache();
+    const c = cache();
 
     c.set('a', 1);
     c.set('b', 2);
@@ -405,7 +400,7 @@ test('report after reset', async (assert) => {
 
 test('lifetime of 0 should not expire', async (assert) => {
 
-    const c = m.cache();
+    const c = cache();
 
     c.set('no-expire', 123, 0);
 
@@ -416,7 +411,7 @@ test('lifetime of 0 should not expire', async (assert) => {
 
 test('negative lifetime should not expire', async (assert) => {
 
-    const c = m.cache();
+    const c = cache();
 
     c.set('no-expire', 123, -1);
 
@@ -427,7 +422,7 @@ test('negative lifetime should not expire', async (assert) => {
 
 test('get without function returns undefined for missing key', async (assert) => {
 
-    const c = m.cache();
+    const c = cache();
     const result = await c.get('missing');
 
     assert.equal(result, undefined);
@@ -436,7 +431,7 @@ test('get without function returns undefined for missing key', async (assert) =>
 
 test('get with function but no lifetime', async (assert) => {
 
-    const c = m.cache();
+    const c = cache();
     let count = 0;
 
     const result = await c.get('test', async () => {
@@ -459,5 +454,35 @@ test('get with function but no lifetime', async (assert) => {
 
     assert.equal(cached, 'value');
     assert.equal(count, 1);
+
+});
+
+test('debug mode logs cache operations', async (assert) => {
+
+    const debugStub = stub();
+    const mod = mock('./cache', {
+        './logger': {
+            logger: {debug: debugStub},
+        },
+    });
+
+    const c = mod.cache(true); // Enable debug mode
+
+    // Test get with debug logging
+    await c.get('test-key', async () => 'test-value');
+
+    // Test get hit with debug logging
+    assert.equal(await c.get('test-key'), 'test-value');
+
+    // Test get miss with debug logging
+    assert.equal(await c.get('missing-key'), undefined);
+
+    // check that the debug stub was called with the correct arguments
+    assert.equal(debugStub.getCalls(), [
+        ['miss: test-key'],
+        ['set: test-key'],
+        ['hit: test-key'],
+        ['miss: missing-key'],
+    ]);
 
 });

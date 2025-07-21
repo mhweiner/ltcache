@@ -15,7 +15,7 @@ export type Report = {
     sizeKb: number
 };
 
-export function cache(): Cache {
+export function cache(debug = false): Cache {
 
     const cache = new Map<string, any>();
     const clearTimeouts = new Map<string, NodeJS.Timeout>();
@@ -26,6 +26,7 @@ export function cache(): Cache {
     const set = <T>(key: string, value: T, lifetimeInSeconds?: number): void => {
 
         cache.set(key, value);
+        debug && logger.debug(`set: ${key}`);
 
         if (clearTimeouts.has(key)) clearTimeout(clearTimeouts.get(key) as NodeJS.Timeout);
 
@@ -48,26 +49,24 @@ export function cache(): Cache {
         lifetimeInSeconds?: number
     ): Promise<T> => {
 
-        logger.debug(`[localcache] get ${key}`);
-
         if (cache.has(key)) {
 
             hits++;
-            logger.debug(`[localcache] hit ${key}`);
+            debug && logger.debug(`hit: ${key}`);
 
             return cache.get(key) as T;
 
         }
 
         misses++;
-        logger.debug(`[localcache] miss ${key}`);
+        debug && logger.debug(`miss: ${key}`);
 
         if (typeof fn === 'function') {
 
             // Check if there's already a pending request for this key
             if (pendingGets.has(key)) {
 
-                logger.debug(`[localcache] waiting for pending request ${key}`);
+                debug && logger.debug(`waiting for pending request: ${key}`);
 
                 return pendingGets.get(key) as T;
 
@@ -80,7 +79,6 @@ export function cache(): Cache {
 
                     const value = await fn();
 
-                    logger.debug(`[localcache] set ${key} (cache miss)`);
                     set(key, value, lifetimeInSeconds);
 
                     return value;
